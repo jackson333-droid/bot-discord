@@ -16,7 +16,7 @@ const client = new Client({
 // VARIABLES
 const TOKEN = process.env.TOKEN;
 const CANAL_NOMBRE_ID = "1460726960136130570"; // nombre_apellido
-const CANAL_AYUDA_ID = "ID_DEL_CANAL_AYUDA"; // <-- CAMBIA ESTO
+const CANAL_AYUDA_ID = "1433923238898958547"; // Soporte
 
 client.on("ready", () => {
   console.log(`✅ Bot conectado como ${client.user.tag}`);
@@ -152,4 +152,3 @@ client.on("messageCreate", async (message) => {
 });
 
 client.login(TOKEN);
-
