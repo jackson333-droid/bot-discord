@@ -90,7 +90,6 @@ client.on("messageCreate", async (message) => {
     if (
       texto.includes("normas") ||
       texto.includes("regla")
-      texto.includes("reglas")
     ) {
       return message.reply(
         "📜 Revisa el canal #normativas antes de jugar."
@@ -152,3 +151,4 @@ client.on("messageCreate", async (message) => {
 });
 
 client.login(TOKEN);
+
