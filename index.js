@@ -10,7 +10,7 @@ const client = new Client({
 });
 
 // tokens
-const TOKEN = "MTQ2MDcxNjQxNzE4MjYwMTIyNg.GaKbdq.Nf2O_tJNBR8smZWG-kPodIpoCdhCi82_xEAY_Y";
+const TOKEN = process.env.TOKEN;
 const CANAL_ID = "1460726960136130570";
 
 client.on("ready", () => {
@@ -50,3 +50,4 @@ client.on("messageCreate", async (message) => {
 });
 
 client.login(TOKEN);
+
