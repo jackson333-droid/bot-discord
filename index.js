@@ -13,27 +13,29 @@ const client = new Client({
   ]
 });
 
-// VARIABLES
+// ================= VARIABLES =================
 const TOKEN = process.env.TOKEN;
-const CANAL_NOMBRE_ID = "1460726960136130570"; // nombre_apellido
+
+const CANAL_NOMBRE_ID = "1460726960136130570";
+
 const CANALES_AYUDA = [
-  "1433856546558971936", // soporte
-  "1433917373152493660", // otro canal
-  "1456916096312545374"  // otro más
+  "1433856546558971936",
+  "1433917373152493660",
+  "1456916096312545374"
 ];
 
+// ================= READY =================
 client.on("ready", () => {
   console.log(`✅ Bot conectado como ${client.user.tag}`);
 });
 
+// ================= MENSAJES =================
 client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
 
   const texto = message.content.toLowerCase();
 
-  /* =========================
-     COMANDO STEALTH
-     ========================= */
+  // ================= STEALTH =================
   if (message.content.startsWith("!ste ")) {
     if (
       !message.member.permissions.has(
@@ -49,81 +51,70 @@ client.on("messageCreate", async (message) => {
     return;
   }
 
-  /* =========================
-     ASISTENTE AUTOMÁTICO
-     ========================= */
-  if (message.channel.id === CANAL_AYUDA_ID) {
+  // ================= AYUDA AUTOMÁTICA =================
+  if (CANALES_AYUDA.includes(message.channel.id)) {
 
-    // REGISTRO
     if (texto.includes("registr")) {
       return message.reply(
         "📌 Para registrarte entra al SA-MP y usa:\n`/registrar Nombre_Apellido`"
       );
     }
 
-    // LOGIN
     if (
-      texto.includes("no puedo entrar") ||
+      texto.includes("login") ||
       texto.includes("contraseña") ||
-      texto.includes("login")
+      texto.includes("no puedo entrar")
     ) {
       return message.reply(
-        "🔐 Revisa tu contraseña. Si la olvidaste, contacta a un admin."
+        "🔐 Si olvidaste tu contraseña, contacta a un administrador."
       );
     }
 
-    // IP
     if (texto.includes("ip")) {
       return message.reply(
-        "🌐 IP del servidor: **Proximamente**"
+        "🌐 IP del servidor: **PRÓXIMAMENTE**"
       );
     }
 
-    // NOMBRE RP
     if (
       texto.includes("nombre") ||
       texto.includes("apellido") ||
       texto.includes("nick")
     ) {
       return message.reply(
-        "🧾 El nombre debe ser formato RP:\n`Nombre_Apellido`"
+        "🧾 El nombre RP debe ser:\n`Nombre_Apellido`"
       );
     }
 
-    // NORMAS
     if (
       texto.includes("normas") ||
-      texto.includes("regla")
+      texto.includes("reglas")
     ) {
       return message.reply(
         "📜 Revisa el canal #normativas antes de jugar."
       );
     }
 
-    // REPORTES
     if (
       texto.includes("report") ||
       texto.includes("denunciar")
     ) {
       return message.reply(
-        "🚨 Usa /report dentro del juego o abre ticket en Discord."
+        "🚨 Usa `/report` dentro del juego o abre un ticket."
       );
     }
 
-    // AYUDA GENERAL
     if (
-      texto.includes("ayuda") ||
-      texto.includes("help")
+      texto === "ayuda" ||
+      texto === "help"
     ) {
       return message.reply(
-        "❓ Explica mejor tu duda y el bot o un staff te ayudará."
+        "❓ Escribe tu duda y el bot o un staff te ayudará."
       );
     }
   }
 
-  /* =========================
-     CAMBIO DE NOMBRE
-     ========================= */
+  // ================= CAMBIO DE NOMBRE =================
   if (message.channel.id !== CANAL_NOMBRE_ID) return;
 
   const nuevoNombre = message.content.trim();
@@ -150,11 +141,8 @@ client.on("messageCreate", async (message) => {
 
   } catch (err) {
     console.error(err);
-    message.reply("❌ No pude cambiar tu nombre");
+    message.reply("❌ No pude cambiar tu nombre (revisa permisos)");
   }
 });
 
 client.login(TOKEN);
-
-
-
