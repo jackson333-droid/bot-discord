@@ -71,7 +71,7 @@ client.on("messageCreate", async (message) => {
     // IP
     if (texto.includes("ip")) {
       return message.reply(
-        "🌐 IP del servidor: **123.123.123.123:7777**"
+        "🌐 IP del servidor: **Proximamente**"
       );
     }
 
@@ -88,21 +88,12 @@ client.on("messageCreate", async (message) => {
 
     // NORMAS
     if (
-      texto.includes("norma") ||
+      texto.includes("normas") ||
       texto.includes("regla")
+      texto.includes("reglas")
     ) {
       return message.reply(
         "📜 Revisa el canal #normativas antes de jugar."
-      );
-    }
-
-    // WHITELIST
-    if (
-      texto.includes("whitelist") ||
-      texto.includes("wl")
-    ) {
-      return message.reply(
-        "📝 La whitelist se explica en el canal #whitelist."
       );
     }
 
@@ -161,3 +152,4 @@ client.on("messageCreate", async (message) => {
 });
 
 client.login(TOKEN);
+
