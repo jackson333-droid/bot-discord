@@ -51,68 +51,124 @@ client.on("messageCreate", async (message) => {
     return;
   }
 
-  // ================= AYUDA AUTOMÁTICA =================
-  if (CANALES_AYUDA.includes(message.channel.id)) {
+// ================= RESPUESTAS AUTOMÁTICAS TIPO IA =================
+if (CANALES_AYUDA.includes(message.channel.id)) {
 
-    if (texto.includes("registr")) {
-      return message.reply(
-        "📌 Para registrarte entra al SA-MP y usa:\n`/registrar Nombre_Apellido`"
-      );
-    }
-
-    if (
-      texto.includes("login") ||
-      texto.includes("contraseña") ||
-      texto.includes("no puedo entrar")
-    ) {
-      return message.reply(
-        "🔐 Si olvidaste tu contraseña, contacta a un administrador."
-      );
-    }
-
-    if (texto.includes("ip")) {
-      return message.reply(
-        "🌐 IP del servidor: **PRÓXIMAMENTE**"
-      );
-    }
-
-    if (
-      texto.includes("nombre") ||
-      texto.includes("apellido") ||
-      texto.includes("nick")
-    ) {
-      return message.reply(
-        "🧾 El nombre RP debe ser:\n`Nombre_Apellido`"
-      );
-    }
-
-    if (
-      texto.includes("normas") ||
-      texto.includes("regla")
-    ) {
-      return message.reply(
-        "📜 Revisa el canal #normativas antes de jugar."
-      );
-    }
-
-    if (
-      texto.includes("report") ||
-      texto.includes("denunciar")
-    ) {
-      return message.reply(
-        "🚨 Usa `/report` dentro del juego o abre un ticket."
-      );
-    }
-
-    if (
-      texto === "ayuda" ||
-      texto === "help"
-    ) {
-      return message.reply(
-        "❓ Escribe tu duda y el bot o un staff te ayudará."
-      );
-    }
+  // --- SALUDOS ---
+  if (texto.match(/\b(hola|hey|buenas|hello|ola)\b/)) {
+    return message.reply("👋 ¡Hola! ¿En qué puedo ayudarte?");
   }
+
+  // --- AYUDA GENERAL ---
+  if (texto === "ayuda" || texto === "help") {
+    return message.reply(
+      "🤖 Puedes preguntarme sobre:\n" +
+      "• registro\n• reglas\n• ip\n• comandos\n• problemas\n• discord\n• samp\n• admin\n• bots\n• ia\n\n" +
+      "Escribe tu duda 👇"
+    );
+  }
+
+  // --- REGISTRO ---
+  if (texto.includes("registr")) {
+    return message.reply(
+      "🧾 Para registrarte en el servidor usa:\n" +
+      "`/registrar Nombre_Apellido`\n" +
+      "Ejemplo: `/registrar Juan_Perez`"
+    );
+  }
+
+  // --- LOGIN ---
+  if (texto.includes("login") || texto.includes("contraseña")) {
+    return message.reply(
+      "🔐 Si tienes problemas de login:\n" +
+      "• Revisa mayúsculas\n• No compartas tu clave\n• Si falló, abre un ticket"
+    );
+  }
+
+  // --- REGLAS ---
+  if (texto.includes("reglas") || texto.includes("normas")) {
+    return message.reply("📜 Las reglas están en el canal #normativas");
+  }
+
+  // --- IP ---
+  if (texto.includes("ip")) {
+    return message.reply("🌐 IP del servidor: **PRÓXIMAMENTE**");
+  }
+
+  // --- SAMP ---
+  if (texto.includes("samp")) {
+    return message.reply(
+      "🚗 SA-MP:\n" +
+      "• Versión: 0.3.7\n• Usa nombre realista\n• Respeta el rol"
+    );
+  }
+
+  // --- COMANDOS ---
+  if (texto.includes("comandos")) {
+    return message.reply(
+      "⌨️ Comandos básicos:\n" +
+      "• /ayuda\n• /reportar\n• /estadisticas\n• /admins"
+    );
+  }
+
+  // --- ADMINS ---
+  if (texto.includes("admin")) {
+    return message.reply(
+      "🛡️ Los admins ayudan con:\n" +
+      "• reportes\n• bugs\n• problemas graves\n\n" +
+      "No los llames sin motivo."
+    );
+  }
+
+  // --- BUGS ---
+  if (texto.includes("bug") || texto.includes("error")) {
+    return message.reply(
+      "🐞 Si encontraste un bug:\n" +
+      "• explica qué pasó\n• manda captura\n• abre ticket"
+    );
+  }
+
+  // --- DISCORD ---
+  if (texto.includes("discord")) {
+    return message.reply(
+      "💬 Discord sirve para:\n" +
+      "• soporte\n• avisos\n• reportes\n• comunidad"
+    );
+  }
+
+  // --- IA / BOT ---
+  if (
+    texto.includes("ia") ||
+    texto.includes("inteligencia artificial") ||
+    texto.includes("bot piensa")
+  ) {
+    return message.reply(
+      "🤖 No soy una IA real, pero respondo de forma inteligente usando palabras clave 😎"
+    );
+  }
+
+  // --- BOT ---
+  if (texto.includes("bot")) {
+    return message.reply(
+      "🤖 Soy el bot del servidor.\n" +
+      "Puedo responder dudas, ayudar y mantener orden."
+    );
+  }
+
+  // --- PROBLEMAS ---
+  if (texto.includes("problema") || texto.includes("ayuden")) {
+    return message.reply(
+      "🆘 Describe tu problema con detalle y te ayudaré."
+    );
+  }
+
+  // --- NO ENTIENDE ---
+  if (texto.length > 5) {
+    return message.reply(
+      "🤔 No entendí del todo, intenta explicarlo mejor o escribe `ayuda`"
+    );
+  }
+}
 
   // ================= CAMBIO DE NOMBRE =================
   if (message.channel.id !== CANAL_NOMBRE_ID) return;
@@ -146,4 +202,5 @@ client.on("messageCreate", async (message) => {
 });
 
 client.login(TOKEN);
+
 
