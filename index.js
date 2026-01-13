@@ -49,5 +49,19 @@ client.on("messageCreate", async (message) => {
   }
 });
 
+// COMANDO STEALTH
+if (message.content.startsWith("!ste ")) {
+  if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return;
+
+  const texto = message.content.slice(5).trim(); // quita "!ste "
+
+  if (!texto) return;
+
+  await message.channel.send(texto);
+  await message.delete();
+}
+});
+
 client.login(TOKEN);
+
 
