@@ -131,31 +131,29 @@ client.on("messageCreate", async (message) => {
   if (texto === "ayuda" || texto === "help") {
     return message.reply(
       "🤖 Puedes preguntarme sobre:\n" +
-      "• reglas\n• ip\n• servidor\n• admins\n" +
+      "• reglas\n• ip\n• admins\n" +
       "Escribe tu duda 👇"
     );
   }
 
-  // REGLAS
-  if (texto.includes("reglas") || texto.includes("normas")) {
-    return message.reply("📜 Las reglas están en el canal #normativas");
-  }
+ // REGLAS
+if (texto.includes("reglas") || texto.includes("normas")) {
+  return message.reply("📜 Las reglas están en el canal #normativas");
+}
 
-  // IP
-  if (texto.includes("ip")) {
-    return message.reply("🌐 IP del servidor: **144.217.174.212:1167**");
-  }
+// IP
+if (texto.includes("ip")) {
+  return message.reply("🌐 IP del servidor: **144.217.174.212:1167**");
+}
 
-  // ADMINS
-  if (texto.includes("admin")) {
-    return message.reply("🛡️ Los administradores te ayudan con reportes y problemas graves.");
-  }
+// ADMINS
+if (texto.includes("admin")) {
+  return message.reply("👮 Los administradores te ayudan con reportes y problemas graves.");
+}
 
 // SOLO RESPONDE SI PREGUNTAN EXPLÍCITAMENTE
 if (texto.startsWith("?")) {
-  return message.reply(
-    "🤖 No entendí del todo, intenta reformular la pregunta o escribe `ayuda`"
-  );
+  return message.reply("⏳ Próximamente...");
 }
 });
   //  ANTINUKE 
@@ -277,6 +275,7 @@ client.on("guildMemberAdd", async (member) => {
 
 
 client.login(TOKEN);
+
 
 
 
