@@ -37,11 +37,7 @@ client.on("messageCreate", async (message) => {
 
   // ================= STEALTH =================
   if (message.content.startsWith("!ste ")) {
-    if (
-      !message.member.permissions.has(
-        PermissionsBitField.Flags.Administrator
-      )
-    ) return;
+    if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return;
 
     const msg = message.content.slice(5).trim();
     if (!msg) return;
@@ -51,71 +47,64 @@ client.on("messageCreate", async (message) => {
     return;
   }
 
-// ================= RESPUESTAS AUTOMÁTICAS TIPO IA =================
-if (CANALES_AYUDA.includes(message.channel.id)) {
+  // ================= CAMBIO DE NOMBRE =================
+  if (message.channel.id === CANAL_NOMBRE_ID) {
+    const nuevoNombre = message.content.trim();
 
+    if (!nuevoNombre.includes("_")) {
+      const aviso = await message.reply("❌ Usa el formato: Nombre_Apellido");
+      setTimeout(() => aviso.delete().catch(() => {}), 5000);
+      return;
+    }
+
+    try {
+      await message.member.setNickname(nuevoNombre);
+      const confirmacion = await message.reply(
+        `✅ Tu nombre fue cambiado a **${nuevoNombre}**`
+      );
+
+      setTimeout(() => {
+        message.delete().catch(() => {});
+        confirmacion.delete().catch(() => {});
+      }, 3000);
+    } catch (err) {
+      console.error(err);
+      message.reply("❌ No pude cambiar tu nombre (revisa permisos)");
+    }
+    return;
   }
 
-  // --- AYUDA GENERAL ---
+  // ================= RESPUESTAS AUTOMÁTICAS =================
+  if (!CANALES_AYUDA.includes(message.channel.id)) return;
+
+  // AYUDA
   if (texto === "ayuda" || texto === "help") {
     return message.reply(
       "🤖 Puedes preguntarme sobre:\n" +
-      "• reglas\n• ip\n" +
+      "• reglas\n• ip\n• servidor\n• admins\n" +
       "Escribe tu duda 👇"
     );
   }
 
-  // --- REGLAS ---
+  // REGLAS
   if (texto.includes("reglas") || texto.includes("normas")) {
     return message.reply("📜 Las reglas están en el canal #normativas");
   }
 
-  // --- IP ---
+  // IP
   if (texto.includes("ip")) {
     return message.reply("🌐 IP del servidor: **PRÓXIMAMENTE**");
   }
-  
-  // --- NO ENTIENDE ---
-  if (texto.length > 1) {
-    return message.reply(
-      "🤔 No entendí del todo, intenta explicarlo mejor o escribe `ayuda`"
-    );
-  }
-}
 
-  // ================= CAMBIO DE NOMBRE =================
-  if (message.channel.id !== CANAL_NOMBRE_ID) return;
-
-  const nuevoNombre = message.content.trim();
-
-  if (!nuevoNombre.includes("_")) {
-    const aviso = await message.reply(
-      "❌ Usa el formato: Nombre_Apellido"
-    );
-    setTimeout(() => aviso.delete().catch(() => {}), 5000);
-    return;
+  // ADMINS
+  if (texto.includes("admin")) {
+    return message.reply("🛡️ Los administradores te ayudan con reportes y problemas graves.");
   }
 
-  try {
-    await message.member.setNickname(nuevoNombre);
-
-    const confirmacion = await message.reply(
-      `✅ Tu nombre fue cambiado a **${nuevoNombre}**`
-    );
-
-    setTimeout(() => {
-      message.delete().catch(() => {});
-      confirmacion.delete().catch(() => {});
-    }, 3000);
-
-  } catch (err) {
-    console.error(err);
-    message.reply("❌ No pude cambiar tu nombre (revisa permisos)");
-  }
+  // SI NO ENTIENDE
+  return message.reply(
+    "🤔 No entendí bien tu pregunta, intenta explicarla mejor o escribe `ayuda`"
+  );
 });
 
 client.login(TOKEN);
-
-
-
-
