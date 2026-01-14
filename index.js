@@ -239,7 +239,45 @@ client.on("roleCreate", async (role) => {
   await punish(guild, executor.id, "CREACIÓN DE ROL ADMIN");
 });
 
+// ================= ANTI BOT INVITE PRO =================
+client.on("guildMemberAdd", async (member) => {
+  if (!member.user.bot) return; // solo bots
+
+  const guild = member.guild;
+
+  try {
+    const logs = await guild.fetchAuditLogs({
+      type: 28, // BOT_ADD
+      limit: 1
+    });
+
+    const entry = logs.entries.first();
+    if (!entry) return;
+
+    const executor = entry.executor;
+    if (!executor) return;
+
+    // si es de confianza, no hacer nada
+    if (isTrusted(executor.id, guild)) return;
+
+    // 🚫 BAN AL BOT
+    await guild.members.ban(member.id, {
+      reason: "ANTI-NUKE PRO: Bot invitado sin autorización"
+    });
+
+    // 🚫 BAN AL INVITADOR
+    await guild.members.ban(executor.id, {
+      reason: "ANTI-NUKE PRO: Invitó bot sin permiso"
+    });
+
+  } catch (err) {
+    console.error("Error AntiBot:", err);
+  }
+});
+
+
 client.login(TOKEN);
+
 
 
 
