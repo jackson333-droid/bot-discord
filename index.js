@@ -85,6 +85,20 @@ if (CANALES_AYUDA.includes(message.channel.id)) {
     );
   }
 
+  // --- ESTADO DEL SERVIDOR ---
+if (
+  texto.includes("abrio") ||
+  texto.includes("abrió") ||
+  texto.includes("abierto") ||
+  texto.includes("online") ||
+  texto.includes("servidor")
+) {
+  return message.reply(
+    "🟢 El estado del servidor se anuncia en #anuncios.\n" +
+    "Si no hay aviso reciente, aún está cerrado."
+  );
+}
+
   // --- REGLAS ---
   if (texto.includes("reglas") || texto.includes("normas")) {
     return message.reply("📜 Las reglas están en el canal #normativas");
@@ -108,15 +122,6 @@ if (CANALES_AYUDA.includes(message.channel.id)) {
     return message.reply(
       "⌨️ Comandos básicos:\n" +
       "• /ayuda\n• /reportar\n• /estadisticas\n• /admins"
-    );
-  }
-
-  // --- ADMINS ---
-  if (texto.includes("admin")) {
-    return message.reply(
-      "🛡️ Los admins ayudan con:\n" +
-      "• reportes\n• bugs\n• problemas graves\n\n" +
-      "No los llames sin motivo."
     );
   }
 
@@ -163,7 +168,7 @@ if (CANALES_AYUDA.includes(message.channel.id)) {
   }
 
   // --- NO ENTIENDE ---
-  if (texto.length > 5) {
+  if (texto.length > 1) {
     return message.reply(
       "🤔 No entendí del todo, intenta explicarlo mejor o escribe `ayuda`"
     );
@@ -202,5 +207,6 @@ if (CANALES_AYUDA.includes(message.channel.id)) {
 });
 
 client.login(TOKEN);
+
 
 
