@@ -54,50 +54,16 @@ client.on("messageCreate", async (message) => {
 // ================= RESPUESTAS AUTOMÁTICAS TIPO IA =================
 if (CANALES_AYUDA.includes(message.channel.id)) {
 
-  // --- SALUDOS ---
-  if (texto.match(/\b(hola|hey|buenas|hello|ola)\b/)) {
-    return message.reply("👋 ¡Hola! ¿En qué puedo ayudarte?");
   }
 
   // --- AYUDA GENERAL ---
   if (texto === "ayuda" || texto === "help") {
     return message.reply(
       "🤖 Puedes preguntarme sobre:\n" +
-      "• registro\n• reglas\n• ip\n• comandos\n• problemas\n• discord\n• samp\n• admin\n• bots\n• ia\n\n" +
+      "• reglas\n• ip\n" +
       "Escribe tu duda 👇"
     );
   }
-
-  // --- REGISTRO ---
-  if (texto.includes("registr")) {
-    return message.reply(
-      "🧾 Para registrarte en el servidor usa:\n" +
-      "`/registrar Nombre_Apellido`\n" +
-      "Ejemplo: `/registrar Juan_Perez`"
-    );
-  }
-
-  // --- LOGIN ---
-  if (texto.includes("login") || texto.includes("contraseña")) {
-    return message.reply(
-      "🔐 Si tienes problemas de login:\n" +
-      "• Revisa mayúsculas\n• No compartas tu clave\n• Si falló, abre un ticket"
-    );
-  }
-
-  // --- ESTADO DEL SERVIDOR ---
-if (
-  texto.includes("abrio") ||
-  texto.includes("abrió") ||
-  texto.includes("abierto") ||
-  texto.includes("online") ||
-  texto.includes("servidor")
-) {
-  return message.reply(
-    "🟢 El estado del servidor se anuncia en #anuncios.\n" +
-    "Si no hay aviso reciente, aún está cerrado."
-  );
-}
 
   // --- REGLAS ---
   if (texto.includes("reglas") || texto.includes("normas")) {
@@ -108,65 +74,7 @@ if (
   if (texto.includes("ip")) {
     return message.reply("🌐 IP del servidor: **PRÓXIMAMENTE**");
   }
-
-  // --- SAMP ---
-  if (texto.includes("samp")) {
-    return message.reply(
-      "🚗 SA-MP:\n" +
-      "• Versión: 0.3.7\n• Usa nombre realista\n• Respeta el rol"
-    );
-  }
-
-  // --- COMANDOS ---
-  if (texto.includes("comandos")) {
-    return message.reply(
-      "⌨️ Comandos básicos:\n" +
-      "• /ayuda\n• /reportar\n• /estadisticas\n• /admins"
-    );
-  }
-
-  // --- BUGS ---
-  if (texto.includes("bug") || texto.includes("error")) {
-    return message.reply(
-      "🐞 Si encontraste un bug:\n" +
-      "• explica qué pasó\n• manda captura\n• abre ticket"
-    );
-  }
-
-  // --- DISCORD ---
-  if (texto.includes("discord")) {
-    return message.reply(
-      "💬 Discord sirve para:\n" +
-      "• soporte\n• avisos\n• reportes\n• comunidad"
-    );
-  }
-
-  // --- IA / BOT ---
-  if (
-    texto.includes("ia") ||
-    texto.includes("inteligencia artificial") ||
-    texto.includes("bot piensa")
-  ) {
-    return message.reply(
-      "🤖 No soy una IA real, pero respondo de forma inteligente usando palabras clave 😎"
-    );
-  }
-
-  // --- BOT ---
-  if (texto.includes("bot")) {
-    return message.reply(
-      "🤖 Soy el bot del servidor.\n" +
-      "Puedo responder dudas, ayudar y mantener orden."
-    );
-  }
-
-  // --- PROBLEMAS ---
-  if (texto.includes("problema") || texto.includes("ayuden")) {
-    return message.reply(
-      "🆘 Describe tu problema con detalle y te ayudaré."
-    );
-  }
-
+  
   // --- NO ENTIENDE ---
   if (texto.length > 1) {
     return message.reply(
@@ -207,6 +115,7 @@ if (
 });
 
 client.login(TOKEN);
+
 
 
 
