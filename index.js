@@ -107,7 +107,8 @@ if (texto.startsWith("?")) {
     "🤖 No entendí del todo, intenta reformular la pregunta o escribe `ayuda`"
   );
 }
-
+});
 
 client.login(TOKEN);
+
 
