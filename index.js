@@ -101,10 +101,13 @@ client.on("messageCreate", async (message) => {
     return message.reply("🛡️ Los administradores te ayudan con reportes y problemas graves.");
   }
 
-  // SI NO ENTIENDE
+// SOLO RESPONDE SI PREGUNTAN EXPLÍCITAMENTE
+if (texto.startsWith("?")) {
   return message.reply(
-    "🤔 No entendí bien tu pregunta, intenta explicarla mejor o escribe `ayuda`"
+    "🤖 No entendí del todo, intenta reformular la pregunta o escribe `ayuda`"
   );
-});
+}
+
 
 client.login(TOKEN);
+
