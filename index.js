@@ -143,7 +143,7 @@ client.on("messageCreate", async (message) => {
 
   // IP
   if (texto.includes("ip")) {
-    return message.reply("🌐 IP del servidor: **PRÓXIMAMENTE**");
+    return message.reply("🌐 IP del servidor: **144.217.174.212:1167**");
   }
 
   // ADMINS
@@ -277,6 +277,7 @@ client.on("guildMemberAdd", async (member) => {
 
 
 client.login(TOKEN);
+
 
 
 
