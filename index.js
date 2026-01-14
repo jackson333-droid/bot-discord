@@ -157,6 +157,7 @@ if (texto.startsWith("?")) {
     "🤖 No entendí del todo, intenta reformular la pregunta o escribe `ayuda`"
   );
 }
+});
   //  ANTINUKE 
 
 // BAN
@@ -239,6 +240,7 @@ client.on("roleCreate", async (role) => {
 });
 
 client.login(TOKEN);
+
 
 
 
