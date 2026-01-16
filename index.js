@@ -13,45 +13,38 @@ const client = new Client({
   ]
 });
 
-// ================= VARIABLES =================
+// ================= CONFIG =================
 const TOKEN = process.env.TOKEN;
 
+// CANAL PARA CAMBIO DE NOMBRE
 const CANAL_NOMBRE_ID = "1460726960136130570";
 
-const CANALES_AYUDA = [
-  "1433856546558971936",
-  "1433917373152493660",
-  "1456916096312545374"
-];
-
-// ================= ANTINUKE PRO =================
+// IDS DE CONFIANZA
 const TRUSTED_IDS = [
-  "439605128186691584", // Charlie
-  "1216928287410884682", // Andrew
-  "1128192952875880448"  // Yeriel
+  "439605128186691584",
+  "1216928287410884682",
+  "1128192952875880448"
 ];
 
-// límites (muy agresivo)
+// LIMITES ANTINUKE
 const LIMITS = {
   ban: 2,
   kick: 2,
   channel: 2,
   role: 2,
-  time: 10000 // 10 segundos
+  time: 10000
 };
 
 const actionTracker = new Map();
-// ===============================================
 
 // ================= READY =================
 client.on("ready", () => {
   console.log(`✅ Bot conectado como ${client.user.tag}`);
 });
 
+// ================= FUNCIONES =================
 function isTrusted(userId, guild) {
-  if (TRUSTED_IDS.includes(userId)) return true;
-  if (guild.ownerId === userId) return true;
-  return false;
+  return TRUSTED_IDS.includes(userId) || guild.ownerId === userId;
 }
 
 function registerAction(userId, type) {
@@ -59,7 +52,6 @@ function registerAction(userId, type) {
     actionTracker.set(userId, { ban: 0, kick: 0, channel: 0, role: 0 });
     setTimeout(() => actionTracker.delete(userId), LIMITS.time);
   }
-
   const data = actionTracker.get(userId);
   data[type]++;
   return data[type] >= LIMITS[type];
@@ -68,24 +60,18 @@ function registerAction(userId, type) {
 async function punish(guild, userId, reason) {
   try {
     const member = await guild.members.fetch(userId);
-
-    // quitar todos los roles
     await member.roles.set([], "ANTINUKE PRO");
-
-    // ban inmediato
     await guild.members.ban(userId, {
       reason: `ANTINUKE PRO: ${reason}`
     });
-  } catch (e) {}
+  } catch {}
 }
 
 // ================= MENSAJES =================
 client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
 
-  const texto = message.content.toLowerCase();
-
-  // ================= STEALTH =================
+  // ===== STEALTH =====
   if (message.content.startsWith("!ste ")) {
     if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return;
 
@@ -97,7 +83,7 @@ client.on("messageCreate", async (message) => {
     return;
   }
 
-  // ================= CAMBIO DE NOMBRE =================
+  // ===== CAMBIO DE NOMBRE =====
   if (message.channel.id === CANAL_NOMBRE_ID) {
     const nuevoNombre = message.content.trim();
 
@@ -117,37 +103,19 @@ client.on("messageCreate", async (message) => {
         message.delete().catch(() => {});
         confirmacion.delete().catch(() => {});
       }, 3000);
-    } catch (err) {
-      console.error(err);
-      message.reply("❌ No pude cambiar tu nombre (revisa permisos)");
+    } catch {
+      message.reply("❌ No pude cambiar tu nombre (permisos)");
     }
     return;
   }
 
-  // ================= RESPUESTAS AUTOMÁTICAS =================
-  if (!CANALES_AYUDA.includes(message.channel.id)) return;
-
-  // AYUDA
-  if (texto === "ayuda" || texto === "help") {
-    return message.reply(
-      "🤖 Puedes preguntarme sobre:\n" +
-      "• reglas\n• ip\n" +
-      "Escribe tu duda 👇"
-    );
+  // ===== COMANDO IP =====
+  if (message.content.toLowerCase() === "!ip") {
+    return message.reply("🌐 IP del servidor: **144.217.174.212:1167**");
   }
-
- // REGLAS
-if (texto.includes("reglas") || texto.includes("normas")) {
-  return message.reply("📜 Las reglas están en la categoria #normativas");
-}
-
-// IP
-if (texto.includes("ip")) {
-  return message.reply("🌐 IP del servidor: **144.217.174.212:1167**");
-}
-
 });
-  //  ANTINUKE 
+
+// ================= ANTINUKE =================
 
 // BAN
 client.on("guildBanAdd", async (ban) => {
@@ -195,7 +163,7 @@ client.on("channelDelete", async (channel) => {
 
   try {
     await channel.clone({ reason: "ANTINUKE PRO: Canal restaurado" });
-  } catch (e) {}
+  } catch {}
 });
 
 // ROLES
@@ -228,49 +196,30 @@ client.on("roleCreate", async (role) => {
   await punish(guild, executor.id, "CREACIÓN DE ROL ADMIN");
 });
 
-// ================= ANTI BOT INVITE PRO =================
+// ================= ANTI BOT INVITE =================
 client.on("guildMemberAdd", async (member) => {
-  if (!member.user.bot) return; // solo bots
+  if (!member.user.bot) return;
 
   const guild = member.guild;
 
   try {
-    const logs = await guild.fetchAuditLogs({
-      type: 28, // BOT_ADD
-      limit: 1
-    });
-
+    const logs = await guild.fetchAuditLogs({ type: 28, limit: 1 });
     const entry = logs.entries.first();
     if (!entry) return;
 
     const executor = entry.executor;
-    if (!executor) return;
+    if (!executor || isTrusted(executor.id, guild)) return;
 
-    // si es de confianza, no hacer nada
-    if (isTrusted(executor.id, guild)) return;
-
-    // 🚫 BAN AL BOT
     await guild.members.ban(member.id, {
-      reason: "ANTI-NUKE PRO: Bot invitado sin autorización"
+      reason: "ANTINUKE PRO: Bot invitado sin autorización"
     });
 
-    // 🚫 BAN AL INVITADOR
     await guild.members.ban(executor.id, {
-      reason: "ANTI-NUKE PRO: Invitó bot sin permiso"
+      reason: "ANTINUKE PRO: Invitó bot sin permiso"
     });
-
   } catch (err) {
     console.error("Error AntiBot:", err);
   }
 });
 
-
 client.login(TOKEN);
-
-
-
-
-
-
-
-
