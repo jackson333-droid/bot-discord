@@ -131,7 +131,7 @@ client.on("messageCreate", async (message) => {
 
     const embed = new EmbedBuilder()
       .setColor(0x8b0000) // rojo oscuro
-      .setTitle("🎬 NUEVO VIDEO")
+      .setTitle("🎬 NUEVO VIDEO DE LATAMGAMERS")
       .setDescription(
         `👉 **Míralo aquí:**\n${url}\n\nNo te lo pierdas 👀🔥`
       )
@@ -265,5 +265,6 @@ client.on("guildMemberAdd", async (member) => {
 });
 
 client.login(TOKEN);
+
 
 
