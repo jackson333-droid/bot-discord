@@ -71,6 +71,7 @@ async function punish(guild, userId, reason) {
 
 // ================= MENSAJES =================
 client.on("messageCreate", async (message) => {
+  if (!message.guild) return;
   if (message.author.bot) return;
 
   // ===== STEALTH =====
@@ -264,4 +265,5 @@ client.on("guildMemberAdd", async (member) => {
 });
 
 client.login(TOKEN);
+
 
