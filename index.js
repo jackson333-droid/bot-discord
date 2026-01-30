@@ -133,7 +133,7 @@ client.on("messageCreate", async (message) => {
       .setColor(0x8b0000) // rojo oscuro
       .setTitle("🎬 NUEVO VIDEO DE LATAMGAMERS")
       .setDescription(
-        `👉 **Míralo aquí:**\n${url}\n\nNo te lo pierdas 👀🔥`
+        `👉 **Míralo aquí:**\n${url}\n\nNo te lo pierdas, ve a darle apoyo 👀🔥`
       )
       .setFooter({
         text: `Subido por ${message.author.username}`
@@ -265,6 +265,7 @@ client.on("guildMemberAdd", async (member) => {
 });
 
 client.login(TOKEN);
+
 
 
 
