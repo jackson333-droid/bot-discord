@@ -37,7 +37,7 @@ const rest = new REST({ version: "10" }).setToken(TOKEN);
 (async () => {
   try {
     await rest.put(
-      Routes.applicationCommands(CLIENT_ID),
+      Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID),
       { body: commands }
     );
     console.log("✅ Comando /panel registrado");
@@ -50,6 +50,7 @@ const rest = new REST({ version: "10" }).setToken(TOKEN);
 // CANAL PARA CAMBIO DE NOMBRE
 const CANAL_NOMBRE_ID = "1460726960136130570";
 const ADMIN_ROLE_ID = "1433857238602092604";
+const GUILD_ID = "1433856545594278111";
 const CANAL_VIDEOS_ID = "1466834210500378864";
 
 // IDS DE CONFIANZA
@@ -379,6 +380,7 @@ client.on("interactionCreate", async interaction => {
 });
 
 client.login(TOKEN);
+
 
 
 
