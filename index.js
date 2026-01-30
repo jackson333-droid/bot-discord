@@ -72,7 +72,7 @@ const LIMITS = {
 const actionTracker = new Map();
 
 // ================= READY =================
-client.on("clientready", () => {
+client.on("clientReady", () => {
   console.log(`✅ Bot conectado como ${client.user.tag}`);
 });
 
@@ -380,6 +380,7 @@ client.on("interactionCreate", async interaction => {
 });
 
 client.login(TOKEN);
+
 
 
 
