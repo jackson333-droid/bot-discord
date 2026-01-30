@@ -20,8 +20,6 @@ const client = new Client({
   ]
 });
 
-require("dotenv").config();
-
 const TOKEN = process.env.TOKEN;
 
 // ================= CONFIG =================
@@ -380,6 +378,7 @@ client.on("interactionCreate", async interaction => {
 });
 
 client.login(TOKEN);
+
 
 
 
