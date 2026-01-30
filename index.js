@@ -49,6 +49,7 @@ const rest = new REST({ version: "10" }).setToken(TOKEN);
 
 // CANAL PARA CAMBIO DE NOMBRE
 const CANAL_NOMBRE_ID = "1460726960136130570";
+const ADMIN_ROLE_ID = "1433857238602092604";
 const CANAL_VIDEOS_ID = "1466834210500378864";
 
 // IDS DE CONFIANZA
@@ -300,7 +301,7 @@ client.on("interactionCreate", async interaction => {
   // ===== /panel (solo admins) =====
   if (interaction.isChatInputCommand() && interaction.commandName === "panel") {
 
-    if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+    if (!interaction.member.roles.cache.has(ADMIN_ROLE_ID)) {
       return interaction.reply({
         content: "❌ No tienes permisos para usar este comando.",
         ephemeral: true
@@ -378,6 +379,7 @@ client.on("interactionCreate", async interaction => {
 });
 
 client.login(TOKEN);
+
 
 
 
