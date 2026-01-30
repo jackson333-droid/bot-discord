@@ -1,7 +1,8 @@
 const {
   Client,
   GatewayIntentBits,
-  PermissionsBitField
+  PermissionsBitField,
+  EmbedBuilder
 } = require("discord.js");
 
 const client = new Client({
@@ -18,6 +19,7 @@ const TOKEN = process.env.TOKEN;
 
 // CANAL PARA CAMBIO DE NOMBRE
 const CANAL_NOMBRE_ID = "1460726960136130570";
+const CANAL_VIDEOS_ID = "1466834210500378864";
 
 // IDS DE CONFIANZA
 const TRUSTED_IDS = [
@@ -106,6 +108,45 @@ client.on("messageCreate", async (message) => {
     } catch {
       message.reply("❌ No pude cambiar tu nombre (permisos)");
     }
+    return;
+  }
+  // ===== AUTO VIDEO EMBED=====
+  if (message.channel.id === CANAL_VIDEOS_ID) {
+
+    // solo admins
+    if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+      await message.delete().catch(() => {});
+      return;
+    }
+
+    const url = message.content.trim();
+
+    // detectar cualquier link
+    const linkRegex = /(https?:\/\/[^\s]+)/i;
+    if (!linkRegex.test(url)) {
+      await message.delete().catch(() => {});
+      return;
+    }
+
+    const embed = new EmbedBuilder()
+      .setColor(0x8b0000) // rojo oscuro
+      .setTitle("🎬 NUEVO VIDEO")
+      .setDescription(
+        `👉 **Míralo aquí:**\n${url}\n\nNo te lo pierdas 👀🔥`
+      )
+      .setFooter({
+        text: `Subido por ${message.author.username}`
+      })
+      .setTimestamp();
+
+    await message.delete().catch(() => {});
+    const msg = await message.channel.send({ embeds: [embed] });
+
+    // reacciones automáticas
+    await msg.react("❤️");
+    await msg.react("🔥");
+    await msg.react("👀");
+
     return;
   }
 
@@ -223,3 +264,4 @@ client.on("guildMemberAdd", async (member) => {
 });
 
 client.login(TOKEN);
+
