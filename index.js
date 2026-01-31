@@ -25,10 +25,11 @@ const client = new Client({
 // ================= CONFIG =================
 const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
+const GUILD_ID = "1433856545594278111";
+
 
 const CANAL_NOMBRE_ID = "1460726960136130570";
 const ADMIN_ROLE_ID = "1433857238602092604";
-const GUILD_ID = "1433856545594278111";
 const CANAL_VIDEOS_ID = "1466834210500378864";
 const OWNER_ID = "1216928287410884682";
 const STAFF_ROLE_ID = "1433857238602092604";
@@ -442,5 +443,6 @@ client.on("interactionCreate", async interaction => {
 });
 
 client.login(TOKEN);
+
 
 
