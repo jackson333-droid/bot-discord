@@ -8,7 +8,9 @@ const {
   ChannelType,
   SlashCommandBuilder,
   REST,
-  Routes
+  Routes,
+  ButtonBuilder,
+  ButtonStyle
 } = require("discord.js");
 
 const client = new Client({
@@ -20,10 +22,18 @@ const client = new Client({
   ]
 });
 
-const TOKEN = process.env.TOKEN;
-
 // ================= CONFIG =================
+const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
+
+const CANAL_NOMBRE_ID = "1460726960136130570";
+const ADMIN_ROLE_ID = "1433857238602092604";
+const GUILD_ID = "1433856545594278111";
+const CANAL_VIDEOS_ID = "1466834210500378864";
+const OWNER_ID = "1216928287410884682";
+const STAFF_ROLE_ID = "1433857238602092604";
+const CATEGORY_ID = "1433937691325497406";
+const LOG_CHANNEL_ID = "1467285599768805417";
 
 // REGISTRAR /panel
 const commands = [
@@ -45,18 +55,6 @@ const rest = new REST({ version: "10" }).setToken(TOKEN);
     console.error("Error registrando comandos:", err);
   }
 })();
-
-
-// CANAL PARA CAMBIO DE NOMBRE
-const CANAL_NOMBRE_ID = "1460726960136130570";
-const ADMIN_ROLE_ID = "1433857238602092604";
-const GUILD_ID = "1433856545594278111";
-const CANAL_VIDEOS_ID = "1466834210500378864";
-const OWNER_ID = "1216928287410884682";
-const STAFF_ROLE_ID = "1433857238602092604";
-const CATEGORY_ID = "1433937691325497406";
-const LOG_CHANNEL_ID = "1467285599768805417";
-
 
 // IDS DE CONFIANZA
 const TRUSTED_IDS = [
@@ -356,7 +354,7 @@ client.on("interactionCreate", async interaction => {
     const categoria = interaction.values[0];
 
     const existing = interaction.guild.channels.cache.find(
-      c => c.name === `ticket-${interaction.user.id}`
+     c => c.name === `ticket-${interaction.user.username}`
     );
 
     if (existing) {
@@ -430,3 +428,4 @@ client.on("interactionCreate", async interaction => {
 });
 
 client.login(TOKEN);
+
