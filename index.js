@@ -52,6 +52,11 @@ const CANAL_NOMBRE_ID = "1460726960136130570";
 const ADMIN_ROLE_ID = "1433857238602092604";
 const GUILD_ID = "1433856545594278111";
 const CANAL_VIDEOS_ID = "1466834210500378864";
+const OWNER_ID = "1216928287410884682";
+const STAFF_ROLE_ID = "1433857238602092604";
+const CATEGORY_ID = "1433937691325497406";
+const LOG_CHANNEL_ID = "1467285599768805417";
+
 
 // IDS DE CONFIANZA
 const TRUSTED_IDS = [
@@ -299,12 +304,12 @@ client.on("guildMemberAdd", async (member) => {
 // ================= INTERACCIONES (TICKETS) =================
 client.on("interactionCreate", async interaction => {
 
-  // ===== /panel (solo admins) =====
+  // ===== /panel (solo dueño) =====
   if (interaction.isChatInputCommand() && interaction.commandName === "panel") {
 
-    if (!interaction.member.roles.cache.has(ADMIN_ROLE_ID)) {
+    if (interaction.user.id !== OWNER_ID) {
       return interaction.reply({
-        content: "❌ No tienes permisos para usar este comando.",
+        content: "Solo el dueño puede usar este comando.",
         ephemeral: true
       });
     }
@@ -319,13 +324,13 @@ client.on("interactionCreate", async interaction => {
         "📌 Solicitud de Rol\n" +
         "📌 Facciones\n" +
         "📌 Apelar Sanción\n\n" +
-        "Selecciona la categoría correcta abajo 👇"
+        "Selecciona la categoría abajo 👇"
       )
       .setColor(0x8b0000);
 
     const menu = new StringSelectMenuBuilder()
       .setCustomId("ticket_categoria")
-      .setPlaceholder("📂 Selecciona la categoría del ticket")
+      .setPlaceholder("📂 Selecciona la categoría")
       .addOptions([
         { label: "Ayuda Administrativa", value: "Ayuda Administrativa" },
         { label: "Soporte Técnico", value: "Soporte Técnico" },
@@ -339,7 +344,8 @@ client.on("interactionCreate", async interaction => {
 
     await interaction.deferReply({ ephemeral: true });
     await interaction.channel.send({ embeds: [embed], components: [row] });
-    return interaction.editReply({ content: "✅ Panel de tickets enviado." });
+
+    return interaction.editReply({ content: "✅ Panel enviado." });
   }
 
   // ===== CREAR TICKET =====
@@ -349,9 +355,20 @@ client.on("interactionCreate", async interaction => {
 
     const categoria = interaction.values[0];
 
+    const existing = interaction.guild.channels.cache.find(
+      c => c.name === `ticket-${interaction.user.id}`
+    );
+
+    if (existing) {
+      return interaction.editReply({
+        content: "❌ Ya tienes un ticket abierto."
+      });
+    }
+
     const channel = await interaction.guild.channels.create({
       name: `ticket-${interaction.user.username}`,
       type: ChannelType.GuildText,
+      parent: CATEGORY_ID,
       permissionOverwrites: [
         {
           id: interaction.guild.id,
@@ -363,31 +380,53 @@ client.on("interactionCreate", async interaction => {
             PermissionsBitField.Flags.ViewChannel,
             PermissionsBitField.Flags.SendMessages
           ]
+        },
+        {
+          id: STAFF_ROLE_ID,
+          allow: [
+            PermissionsBitField.Flags.ViewChannel,
+            PermissionsBitField.Flags.SendMessages
+          ]
         }
       ]
     });
 
-    await channel.send(
-      `🎟️ **Ticket creado**\n` +
-      `👤 Usuario: ${interaction.user}\n` +
-      `📂 Categoría: **${categoria}**`
+    const closeBtn = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId("cerrar_ticket")
+        .setLabel("🔒 Cerrar Ticket")
+        .setStyle(4)
     );
 
-    return interaction.editReply({
-      content: "✅ Tu ticket fue creado correctamente."
+    await channel.send({
+      content:
+        `🎟️ Ticket creado\n👤 ${interaction.user}\n📂 ${categoria}`,
+      components: [closeBtn]
     });
+
+    const log = interaction.guild.channels.cache.get(LOG_CHANNEL_ID);
+    if (log) log.send(`🧾 Ticket abierto por ${interaction.user} | ${categoria}`);
+
+    return interaction.editReply({ content: "✅ Ticket creado." });
   }
+
+  // ===== CERRAR TICKET =====
+  if (interaction.isButton() && interaction.customId === "cerrar_ticket") {
+
+    if (!interaction.member.roles.cache.has(STAFF_ROLE_ID)) {
+      return interaction.reply({
+        content: "Solo staff puede cerrar tickets.",
+        ephemeral: true
+      });
+    }
+
+    const log = interaction.guild.channels.cache.get(LOG_CHANNEL_ID);
+    if (log) log.send(`🔒 Ticket cerrado por ${interaction.user}`);
+
+    await interaction.reply("🔒 Cerrando ticket...");
+    setTimeout(() => interaction.channel.delete(), 3000);
+  }
+
 });
 
 client.login(TOKEN);
-
-
-
-
-
-
-
-
-
-
-
