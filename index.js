@@ -363,8 +363,22 @@ client.on("interactionCreate", async interaction => {
       });
     }
 
+    // limpiar nombre categoría
+    const baseName = categoria
+      .toLowerCase()
+      .replace(/ /g, "-")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+    
+    // contar tickets existentes
+    const count = interaction.guild.channels.cache.filter(c =>
+      c.name.startsWith(baseName)
+    ).size + 1;
+    
+    const ticketNumber = String(count).padStart(3, "0");
+    
     const channel = await interaction.guild.channels.create({
-      name: `ticket-${interaction.user.username}`,
+      name: `${baseName}-${ticketNumber}`,
       type: ChannelType.GuildText,
       parent: CATEGORY_ID,
       permissionOverwrites: [
@@ -428,4 +442,5 @@ client.on("interactionCreate", async interaction => {
 });
 
 client.login(TOKEN);
+
 
