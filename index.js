@@ -320,7 +320,7 @@ client.on("interactionCreate", async interaction => {
         "📌 Ayuda Administrativa\n" +
         "📌 Soporte Técnico\n" +
         "📌 Reportes\n" +
-        "📌 Solicitud de Rol\n" +
+        "📌 Tienda\n" +
         "📌 Facciones\n" +
         "📌 Apelar Sanción\n\n" +
         "Selecciona la categoría abajo 👇"
@@ -334,7 +334,7 @@ client.on("interactionCreate", async interaction => {
         { label: "Ayuda Administrativa", value: "Ayuda Administrativa" },
         { label: "Soporte Técnico", value: "Soporte Técnico" },
         { label: "Reportes", value: "Reportes" },
-        { label: "Solicitud de Rol", value: "Solicitud de Rol" },
+        { label: "Tienda", value: "Tienda" },
         { label: "Facciones", value: "Facciones" },
         { label: "Apelar Sanción", value: "Apelar Sanción" }
       ]);
@@ -443,6 +443,7 @@ client.on("interactionCreate", async interaction => {
 });
 
 client.login(TOKEN);
+
 
 
 
