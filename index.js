@@ -98,9 +98,9 @@ function registerAction(userId, type) {
 async function punish(guild, userId, reason) {
   try {
     const member = await guild.members.fetch(userId);
-    await member.roles.set([], "ANTINUKE PRO");
+    await member.roles.set([], "antinuke");
     await guild.members.ban(userId, {
-      reason: `ANTINUKE PRO: ${reason}`
+      reason: `antinuke: ${reason}`
     });
   } catch {}
 }
@@ -227,6 +227,10 @@ client.on("guildMemberRemove", async (member) => {
 
 // BORRADO DE CANALES
 client.on("channelDelete", async (channel) => {
+
+  // IGNORAR tickets
+  if (channel.name.startsWith("ticket-") || channel.parentId === CATEGORY_ID) return;
+
   const guild = channel.guild;
   const logs = await guild.fetchAuditLogs({ type: 12, limit: 1 });
   const entry = logs.entries.first();
@@ -240,7 +244,7 @@ client.on("channelDelete", async (channel) => {
   }
 
   try {
-    await channel.clone({ reason: "ANTINUKE PRO: Canal restaurado" });
+    await channel.clone({ reason: "ANTINUKE: Canal restaurado" });
   } catch {}
 });
 
@@ -270,7 +274,7 @@ client.on("roleCreate", async (role) => {
   const executor = entry.executor;
   if (!executor || isTrusted(executor.id, guild)) return;
 
-  await role.delete("ANTINUKE PRO: Rol admin ilegal");
+  await role.delete("antinuke: Rol admin ilegal");
   await punish(guild, executor.id, "CREACIÓN DE ROL ADMIN");
 });
 
@@ -289,11 +293,11 @@ client.on("guildMemberAdd", async (member) => {
     if (!executor || isTrusted(executor.id, guild)) return;
 
     await guild.members.ban(member.id, {
-      reason: "ANTINUKE PRO: Bot invitado sin autorización"
+      reason: "antinuke: Bot invitado sin autorización"
     });
 
     await guild.members.ban(executor.id, {
-      reason: "ANTINUKE PRO: Invitó bot sin permiso"
+      reason: "antinuke: Invitó bot sin permiso"
     });
   } catch (err) {
     console.error("Error AntiBot:", err);
@@ -445,6 +449,7 @@ client.on("interactionCreate", async interaction => {
 });
 
 client.login(TOKEN);
+
 
 
 
